@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Fichas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <main class="container">
+        <div class="top-bar">
+            <div class="caco-display">
+                <span class="caco-nome">Caco:</span>
+                <span class="caco-saldo" id="cacoSaldo">0</span>
+            </div>
+            <div class="top-buttons">
+                <button class="mudar-gateiros-btn" onclick="toggleGateirosInput()">🐱</button>
+                <button class="resetar-btn" onclick="resetarPagina()">Resetar</button>
+            </div>
+        </div>
+
+        <div id="gateiros-input-area" class="input-area oculto">
+            <input type="number" id="numGateirosInput" min="1" max="10" placeholder="Número de Gateiros">
+            <button class="finalizar-btn" onclick="setNumGateiros()">Definir Número de Gateiros</button>
+        </div>
+        
+        <div id="cardsGateiros" class="cards-grid">
+            </div>
+
+        <div id="botoes-acao" class="botoes-acao">
+            <button class="finalizar-btn" onclick="finalizarSessao()">Finalizar</button>
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
