@@ -10,7 +10,8 @@ function renderizarPagina() {
     const botoesAcao = document.getElementById('botoes-acao');
     cardsContainer.innerHTML = '';
 
-    const gateiros = JSON.parse(localStorage.getItem('gateiros'));
+    const gateiros = JSON.parse(localStorage.getItem('gateiros')) || [];
+    const numGateirosVisiveis = parseInt(localStorage.getItem('numGateirosVisiveis')) || gateiros.length;
     const cacoSaldo = parseFloat(localStorage.getItem(NOME_CACO));
     
     // Mostra a área de input se não houver gateiros salvos
@@ -31,8 +32,9 @@ function renderizarPagina() {
         alert("O Caco zerou!");
     }
 
-    // Cria os cards para cada gateiro
-    gateiros.forEach(gateiro => {
+    // Cria os cards para cada gateiro visível
+    for (let i = 0; i < numGateirosVisiveis && i < gateiros.length; i++) {
+        const gateiro = gateiros[i];
         const saldoReais = gateiro.fichas * VALOR_FICHA;
         const totalAcumuladoClass = gateiro.saldoAcumulado >= 0 ? 'saldo-positivo' : 'saldo-negativo';
 
@@ -56,7 +58,7 @@ function renderizarPagina() {
             </div>
         `;
         cardsContainer.innerHTML += cardHTML;
-    });
+    }
 }
 
 // Função para exibir/esconder a área de input de gateiros
@@ -78,15 +80,16 @@ function setNumGateiros() {
     let gateiros = JSON.parse(localStorage.getItem('gateiros')) || [];
     const currentNumGateiros = gateiros.length;
 
+    // Apenas adiciona novos gateiros se o número inserido for maior
     if (numGateiros > currentNumGateiros) {
-        for (let i = currentNumGateiros + 1; i <= numGateiros; i++) {
-            gateiros.push({ id: `Gateiro${i}`, nome: `Gateiro ${i}`, fichas: 0, saldoAcumulado: 0 });
+        for (let i = currentNumGateiros; i < numGateiros; i++) {
+            gateiros.push({ id: `Gateiro${i + 1}`, nome: `Gateiro ${i + 1}`, fichas: 0, saldoAcumulado: 0 });
         }
-    } else if (numGateiros < currentNumGateiros) {
-        // Remove os gateiros excedentes do final do array
-        gateiros = gateiros.slice(0, numGateiros);
     }
     
+    // Salva o número de gateiros visíveis para o layout
+    localStorage.setItem('numGateirosVisiveis', numGateiros);
+
     // Apenas inicializa o saldo do Caco se ele não existir
     if (localStorage.getItem(NOME_CACO) === null) {
         localStorage.setItem(NOME_CACO, SALDO_INICIAL_CACO);
@@ -146,12 +149,18 @@ function editarNome(id) {
 function finalizarSessao() {
     if (confirm("Deseja finalizar a rodada? As fichas serão zeradas e os valores somados ao total Geral.")) {
         const gateiros = JSON.parse(localStorage.getItem('gateiros'));
-        gateiros.forEach(gateiro => {
-            const saldoAtualReais = gateiro.fichas * VALOR_FICHA;
-            gateiro.saldoAcumulado += saldoAtualReais;
-            gateiro.fichas = 0;
-        });
+        const numGateirosVisiveis = parseInt(localStorage.getItem('numGateirosVisiveis')) || gateiros.length;
+
+        // Itera sobre todos os gateiros, mas altera apenas os visíveis
+        for (let i = 0; i < numGateirosVisiveis; i++) {
+             const gateiro = gateiros[i];
+             const saldoAtualReais = gateiro.fichas * VALOR_FICHA;
+             gateiro.saldoAcumulado += saldoAtualReais;
+             gateiro.fichas = 0;
+        }
+
         localStorage.setItem('gateiros', JSON.stringify(gateiros));
+        localStorage.setItem(NOME_CACO, SALDO_INICIAL_CACO); // Reinicia o saldo do Caco
         renderizarPagina();
     }
 }
