@@ -1,176 +1,88 @@
-// Constantes
-const NOME_CACO = 'Caco';
-const SALDO_INICIAL_CACO = 500;
-const VALOR_FICHA = 0.02;
+document.addEventListener('DOMContentLoaded', () => {
+    // Definindo as constantes de estado
+    const STATES =; // Ordem requerida: Sim -> Às Vezes -> Não
+    const STATE_CLASSES = {
+        "SIM": "state-sim",
+        "AV": "state-av",
+        "NA": "state-na"
+    };
 
-// Função principal para renderizar a interface
-function renderizarPagina() {
-    const cardsContainer = document.getElementById('cardsGateiros');
-    const inputArea = document.getElementById('gateiros-input-area');
-    const botoesAcao = document.getElementById('botoes-acao');
-    cardsContainer.innerHTML = '';
+    // Inicializa todos os botões no estado SIM e calcula o resumo inicial
+    document.querySelectorAll('.state-button').forEach(button => {
+        // Assegura que o texto e a classe inicial correspondam ao atributo data-state
+        const initialState = button.getAttribute('data-state');
+        button.textContent = initialState;
+        button.classList.add(STATE_CLASSES);
+    });
 
-    const gateiros = JSON.parse(localStorage.getItem('gateiros')) || [];
-    const numGateirosVisiveis = parseInt(localStorage.getItem('numGateirosVisiveis')) || gateiros.length;
-    const cacoSaldo = parseFloat(localStorage.getItem(NOME_CACO));
+    updateSummary();
+});
+
+/**
+ * Função principal para alternar o estado do botão (Sim -> AV -> Não -> Sim).
+ * @param {HTMLElement} button - O elemento TD clicado.
+ */
+function toggleState(button) {
+    const currentState = button.getAttribute('data-state');
+    const STATES =;
     
-    // Mostra a área de input se não houver gateiros salvos
-    if (!gateiros || gateiros.length === 0) {
-        cardsContainer.classList.add('oculto');
-        botoesAcao.classList.add('oculto');
-        inputArea.classList.remove('oculto');
-        document.getElementById('cacoSaldo').textContent = SALDO_INICIAL_CACO;
-        return;
-    }
-
-    cardsContainer.classList.remove('oculto');
-    botoesAcao.classList.remove('oculto');
-    inputArea.classList.add('oculto');
-    document.getElementById('cacoSaldo').textContent = Math.round(cacoSaldo);
+    // Calcula o índice do próximo estado na sequência (ciclo)
+    let currentIndex = STATES.indexOf(currentState);
+    let nextIndex = (currentIndex + 1) % STATES.length;
+    let nextState = STATES[nextIndex];
     
-    if (cacoSaldo <= 0) {
-        alert("O Caco zerou!");
-    }
+    // Atualiza o estado no DOM
+    button.setAttribute('data-state', nextState);
+    button.textContent = nextState;
+    
+    // Remove todas as classes de estado e adiciona a próxima
+    button.classList.remove('state-sim', 'state-av', 'state-na');
+    
+    const STATE_CLASSES = {
+        "SIM": "state-sim",
+        "AV": "state-av",
+        "NA": "state-na"
+    };
+    button.classList.add(STATE_CLASSES);
 
-    // Cria os cards para cada gateiro visível
-    for (let i = 0; i < numGateirosVisiveis && i < gateiros.length; i++) {
-        const gateiro = gateiros[i];
-        const saldoReais = gateiro.fichas * VALOR_FICHA;
-        const totalAcumuladoClass = gateiro.saldoAcumulado >= 0 ? 'saldo-positivo' : 'saldo-negativo';
-
-        const cardHTML = `
-            <div class="card" id="card${gateiro.id}">
-                <div class="card-header">
-                    <h2 onclick="editarNome('${gateiro.id}')">${gateiro.nome}</h2>
-                    <span class="saldo-geral ${totalAcumuladoClass}" id="saldoGeral${gateiro.id}">
-                        Geral: R$ ${gateiro.saldoAcumulado.toFixed(2).replace('.', ',')}
-                    </span>
-                </div>
-                <div class="saldo-info">
-                    <p>Fichas: <span class="saldo-fichas" id="saldoFichas${gateiro.id}">${Math.round(gateiro.fichas)}</span></p>
-                    <p>Saldo: <span class="saldo-reais" id="saldoReais${gateiro.id}">R$ ${saldoReais.toFixed(2).replace('.', ',')}</span></p>
-                </div>
-                <div class="input-group">
-                    <input type="number" id="valor${gateiro.id}" placeholder="Valor">
-                    <button class="add" onclick="adicionar('${gateiro.id}')">💰</button>
-                    <button class="subtract" onclick="subtrair('${gateiro.id}')">Compra</button>
-                </div>
-            </div>
-        `;
-        cardsContainer.innerHTML += cardHTML;
-    }
+    // Recalcula e atualiza o resumo
+    updateSummary();
 }
 
-// Função para exibir/esconder a área de input de gateiros
-function toggleGateirosInput() {
-    const inputArea = document.getElementById('gateiros-input-area');
-    inputArea.classList.toggle('oculto');
-}
+/**
+ * Recalcula a contagem de Sim, AV e Não e atualiza o resumo.
+ */
+function updateSummary() {
+    const table = document.getElementById('assessmentTable');
+    if (!table) return;
 
-// Função para definir o número de gateiros e manter dados
-function setNumGateiros() {
-    const numGateirosInput = document.getElementById('numGateirosInput');
-    const numGateiros = parseInt(numGateirosInput.value);
+    let simCount = 0;
+    let avCount = 0;
+    let naCount = 0;
+    let totalSkills = 0;
 
-    if (isNaN(numGateiros) || numGateiros < 1 || numGateiros > 10) {
-        alert("Por favor, insira um número de 1 a 10.");
-        return;
-    }
+    // Itera sobre todas as linhas do corpo da tabela
+    table.querySelectorAll('tbody tr').forEach(row => {
+        const button = row.querySelector('.state-button');
+        if (button) {
+            const state = button.getAttribute('data-state');
+            totalSkills++;
 
-    let gateiros = JSON.parse(localStorage.getItem('gateiros')) || [];
-    const currentNumGateiros = gateiros.length;
-
-    // Apenas adiciona novos gateiros se o número inserido for maior
-    if (numGateiros > currentNumGateiros) {
-        for (let i = currentNumGateiros; i < numGateiros; i++) {
-            gateiros.push({ id: `Gateiro${i + 1}`, nome: `Gateiro ${i + 1}`, fichas: 0, saldoAcumulado: 0 });
+            if (state === "SIM") {
+                simCount++;
+            } else if (state === "AV") {
+                avCount++;
+            } else if (state === "NA") {
+                naCount++;
+            }
         }
-    }
+    });
+
+    // Atualiza os elementos HTML do resumo
+    document.getElementById('totalSkills').textContent = totalSkills;
+    document.getElementById('simCount').textContent = simCount;
     
-    // Salva o número de gateiros visíveis para o layout
-    localStorage.setItem('numGateirosVisiveis', numGateiros);
-
-    // Apenas inicializa o saldo do Caco se ele não existir
-    if (localStorage.getItem(NOME_CACO) === null) {
-        localStorage.setItem(NOME_CACO, SALDO_INICIAL_CACO);
-    }
-    
-    localStorage.setItem('gateiros', JSON.stringify(gateiros));
-    renderizarPagina();
+    // Os contadores AV e NA são cruciais para o PEI
+    document.getElementById('avCount').textContent = avCount; // Habilidades que precisam de generalização
+    document.getElementById('naCount').textContent = naCount; // Habilidades a adquirir (Novas metas)
 }
-
-// Funções de adicionar/subtrair fichas
-function adicionar(id) {
-    const inputValor = document.getElementById(`valor${id}`).value;
-    const valor = parseFloat(inputValor);
-    if (isNaN(valor) || valor <= 0) { alert("Valor inválido."); return; }
-
-    const gateiros = JSON.parse(localStorage.getItem('gateiros'));
-    const gateiro = gateiros.find(g => g.id === id);
-    gateiro.fichas += valor;
-    
-    let cacoSaldo = parseFloat(localStorage.getItem(NOME_CACO));
-    cacoSaldo += valor;
-    
-    localStorage.setItem('gateiros', JSON.stringify(gateiros));
-    localStorage.setItem(NOME_CACO, cacoSaldo);
-    renderizarPagina();
-}
-
-function subtrair(id) {
-    const inputValor = document.getElementById(`valor${id}`).value;
-    const valor = parseFloat(inputValor);
-    if (isNaN(valor) || valor <= 0) { alert("Valor inválido."); return; }
-
-    const gateiros = JSON.parse(localStorage.getItem('gateiros'));
-    const gateiro = gateiros.find(g => g.id === id);
-    gateiro.fichas -= valor;
-
-    let cacoSaldo = parseFloat(localStorage.getItem(NOME_CACO));
-    cacoSaldo -= valor;
-    
-    localStorage.setItem('gateiros', JSON.stringify(gateiros));
-    localStorage.setItem(NOME_CACO, cacoSaldo);
-    renderizarPagina();
-}
-
-// Funções de controle
-function editarNome(id) {
-    const gateiros = JSON.parse(localStorage.getItem('gateiros'));
-    const gateiro = gateiros.find(g => g.id === id);
-    const novoNome = prompt(`Editar nome para "${gateiro.nome}":`);
-    if (novoNome && novoNome.trim() !== '') {
-        gateiro.nome = novoNome.trim();
-        localStorage.setItem('gateiros', JSON.stringify(gateiros));
-        renderizarPagina();
-    }
-}
-
-function finalizarSessao() {
-    if (confirm("Deseja finalizar a rodada? As fichas serão zeradas e os valores somados ao total Geral.")) {
-        const gateiros = JSON.parse(localStorage.getItem('gateiros'));
-        const numGateirosVisiveis = parseInt(localStorage.getItem('numGateirosVisiveis')) || gateiros.length;
-
-        // Itera sobre todos os gateiros, mas altera apenas os visíveis
-        for (let i = 0; i < numGateirosVisiveis; i++) {
-             const gateiro = gateiros[i];
-             const saldoAtualReais = gateiro.fichas * VALOR_FICHA;
-             gateiro.saldoAcumulado += saldoAtualReais;
-             gateiro.fichas = 0;
-        }
-
-        localStorage.setItem('gateiros', JSON.stringify(gateiros));
-        localStorage.setItem(NOME_CACO, SALDO_INICIAL_CACO); // Reinicia o saldo do Caco
-        renderizarPagina();
-    }
-}
-
-function resetarPagina() {
-    if (confirm("Deseja resetar TUDO? Isso apagará todos os dados salvos.")) {
-        localStorage.clear();
-        renderizarPagina();
-    }
-}
-
-// Inicialização da página
-document.addEventListener('DOMContentLoaded', renderizarPagina);
