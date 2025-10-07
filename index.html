@@ -3,93 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checklist Integrado VB-MAPP, ABLLS-R e IPO (TEA)</title>
+    <title>Inventário Portage Operacionalizado (IPO) - 4 a 6 Anos</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
     <header>
-        <h1>Avaliação Integrada de Habilidades para TEA</h1>
-        <h2>VB-MAPP, ABLLS-R e IPO: Rastreamento do PEI</h2>
-        <p>Marque o estado atual da criança em cada macro-habilidade. O ciclo de clique é: **Sim (Adquirida) → AV (Às Vezes/Emergente) → Não (Ausente) → Sim**.</p>
+        <h1>Inventário Portage Operacionalizado (IPO)</h1>
+        <h2>Avaliação de Habilidades: 4 a 6 Anos</h2>
+        <p>Marque o estado atual da criança em cada habilidade. O ciclo de clique é: **Sim (1.0) → AV (0.5) → Não (0.0) → Sim**.</p>
+        <p>A pontuação total é calculada automaticamente (Sim=1.0 | AV=0.5 | Não=0.0).</p>
     </header>
 
     <div id="summary">
-        <h3>Resumo de Progresso (Orientação ao PEI)</h3>
-        <p>Total de Habilidades Avaliadas: <span id="totalSkills">0</span></p>
-        <p class="summary-sim">Habilidades Adquiridas (Sim): <span id="simCount">0</span></p>
-        <p class="summary-av">Habilidades a Generalizar (AV): <span id="avCount">0</span></p>
-        <p class="summary-na">Habilidades a Adquirir (Não): <span id="naCount">0</span></p>
+        <h3>Pontuação Total por Domínio (Sim = 1.0 | AV = 0.5)</h3>
+        <p>Total de Itens Aplicados: <span id="totalItems">0</span></p>
+        <div class="score-grid">
+            <div class="score-item score-autocuidado">
+                <span class="domain-label">Autocuidados:</span> <span id="scoreAutocuidado">0.0</span>
+            </div>
+            <div class="score-item score-motor">
+                <span class="domain-label">Motor:</span> <span id="scoreMotor">0.0</span>
+            </div>
+            <div class="score-item score-linguagem">
+                <span class="domain-label">Linguagem:</span> <span id="scoreLinguagem">0.0</span>
+            </div>
+            <div class="score-item score-cognicao">
+                <span class="domain-label">Cognição:</span> <span id="scoreCognicao">0.0</span>
+            </div>
+            <div class="score-item score-socializacao">
+                <span class="domain-label">Socialização:</span> <span id="scoreSocializacao">0.0</span>
+            </div>
+        </div>
+        <h3 class="total-final">Pontuação IPO Bruta Total: <span id="totalScore">0.0</span></h3>
     </div>
 
     <table id="assessmentTable">
         <thead>
             <tr>
-                <th class="skill-column">ID</th>
-                <th class="description-column">Macro-Habilidade Composta (PEI)</th>
-                <th class="score-column">Pontuação</th>
+                <th class="domain-column">Domínio</th>
+                <th class="description-column">Habilidade Avaliada (4 a 6 Anos)</th>
+                <th class="score-column">Pontuação (Sim/AV/Não)</th>
             </tr>
         </thead>
         <tbody>
-            <tr data-skill-id="H1">
-                <td class="skill-id">H1</td>
-                <td>Faz 10 Mando(s) (pedidos) diferentes por meio vocal, sem ecoico nem prompt (VB-MAPP).</td>
-                <td class="state-button" data-state="SIM" onclick="toggleState(this)">SIM</td>
+            <tr data-domain="Autocuidado">
+                <td class="domain-name">Autocuidados</td>
+                <td>Lava as mãos e o rosto de forma eficaz.</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
             </tr>
-             <tr data-skill-id="H2">
-                <td class="skill-id">H2</td>
-                <td>Nomeia (Tato) 25 itens diferentes (objetos, figuras, pessoas familiares) (VB-MAPP).</td>
-                <td class="state-button" data-state="SIM" onclick="toggleState(this)">SIM</td>
+            <tr data-domain="Autocuidado">
+                <td class="domain-name">Autocuidados</td>
+                <td>Desabotoa e abotoa sua roupa.</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
             </tr>
-            <tr data-skill-id="H3">
-                <td class="skill-id">H3</td>
-                <td>Responde a 20 Comportamentos de Ouvinte (Ex: pega o X e dá para a mãe) (VB-MAPP/ABLLS-R).</td>
-                <td class="state-button" data-state="SIM" onclick="toggleState(this)">SIM</td>
+             <tr data-domain="Autocuidado">
+                <td class="domain-name">Autocuidados</td>
+                <td>Usa talher apropriado para alimentar-se (garfo e faca/colher).</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
             </tr>
-            <tr data-skill-id="H4">
-                <td class="skill-id">H4</td>
-                <td>Participa de uma Conversação (Intraverbal) com 5 trocas de turno com o adulto (VB-MAPP).</td>
-                <td class="state-button" data-state="SIM" onclick="toggleState(this)">SIM</td>
+            <tr data-domain="Autocuidado">
+                <td class="domain-name">Autocuidados</td>
+                <td>Retira prato e talheres da mesa após as refeições.</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
             </tr>
-            <tr data-skill-id="H5">
-                <td class="skill-id">H5</td>
-                <td>Imita 10 ações motoras novas (fina e grossa) mediante modelo (ABLLS-R/VB-MAPP).</td>
-                <td class="state-button" data-state="SIM" onclick="toggleState(this)">SIM</td>
+            <tr data-domain="Autocuidado">
+                <td class="domain-name">Autocuidados</td>
+                <td>Evita substâncias prejudiciais ou venenos (consciência de risco).</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
             </tr>
-             <tr data-skill-id="H6">
-                <td class="skill-id">H6</td>
-                <td>Brinca independentemente com propósito (construtivo ou funcional) por 5 minutos (VB-MAPP).</td>
-                <td class="state-button" data-state="SIM" onclick="toggleState(this)">SIM</td>
+            <tr data-domain="Autocuidado">
+                <td class="domain-name">Autocuidados</td>
+                <td>Serve-se à mesa (enquanto a travessa é segurada).[1]</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
             </tr>
-            <tr data-skill-id="H7">
-                <td class="skill-id">H7</td>
-                <td>Alimenta-se com garfo e faca (ou colher) de forma independente e adequada (IPO/ABLLS-R - Autocuidado).</td>
-                <td class="state-button" data-state="SIM" onclick="toggleState(this)">SIM</td>
+            <tr data-domain="Autocuidado">
+                <td class="domain-name">Autocuidados</td>
+                <td>Toma banho só, precisando de ajuda apenas para lavar costas e orelhas.[1]</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
             </tr>
-            <tr data-skill-id="H8">
-                <td class="skill-id">H8</td>
-                <td>Veste-se e desveste-se com pouca ajuda (inclui fechar zíper e botões) (IPO/ABLLS-R - Autocuidado).</td>
-                <td class="state-button" data-state="SIM" onclick="toggleState(this)">SIM</td>
+            <tr data-domain="Autocuidado">
+                <td class="domain-name">Autocuidados</td>
+                <td>Usa faca para espalhar manteiga no pão.[1]</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
             </tr>
-            <tr data-skill-id="H9">
-                <td class="skill-id">H9</td>
-                <td>Usa o banheiro/penico (higiene) de forma independente (controle de esfíncteres) (IPO/ABLLS-R).</td>
-                <td class="state-button" data-state="SIM" onclick="toggleState(this)">SIM</td>
+
+
+            <tr data-domain="Motor">
+                <td class="domain-name">Motor</td>
+                <td>Caminha na ponta dos pés por uma distância de 3 metros.</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
             </tr>
-            <tr data-skill-id="H10">
-                <td class="skill-id">H10</td>
-                <td>Segue regras de grupo (Ex: esperar a vez, sentar na cadeira) em um ambiente de rotina/sala de aula (VB-MAPP).</td>
-                <td class="state-button" data-state="SIM" onclick="toggleState(this)">SIM</td>
+            <tr data-domain="Motor">
+                <td class="domain-name">Motor</td>
+                <td>Pula em um pé só, mantendo o equilíbrio por 5 segundos.</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
             </tr>
-            <tr data-skill-id="H11">
-                <td class="skill-id">H11</td>
-                <td>Nomeia e identifica 5 classes de objetos (Ex: animais, brinquedos, comida) (VB-MAPP).</td>
-                <td class="state-button" data-state="SIM" onclick="toggleState(this)">SIM</td>
+            <tr data-domain="Motor">
+                <td class="domain-name">Motor</td>
+                <td>Copia formas geométricas simples (quadrado, X, círculo).</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
             </tr>
-            <tr data-skill-id="H12">
-                <td class="skill-id">H12</td>
-                <td>Demonstra cooperação e efetividade do reforçador (e.g., aceita feedback, senta-se na mesa por 5 min) (ABLLS-R).</td>
-                <td class="state-button" data-state="SIM" onclick="toggleState(this)">SIM</td>
+            <tr data-domain="Motor">
+                <td class="domain-name">Motor</td>
+                <td>Desenha uma figura humana com pelo menos 6 partes.</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
+            </tr>
+            <tr data-domain="Motor">
+                <td class="domain-name">Motor</td>
+                <td>Usa a tesoura para cortar seguindo linhas curvas.</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
+            </tr>
+
+            <tr data-domain="Linguagem">
+                <td class="domain-name">Linguagem</td>
+                <td>Repete frases longas (10 ou mais palavras) com precisão.</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
+            </tr>
+            <tr data-domain="Linguagem">
+                <td class="domain-name">Linguagem</td>
+                <td>Narra eventos ou histórias com 4 a 5 detalhes na sequência correta.</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
+            </tr>
+            <tr data-domain="Linguagem">
+                <td class="domain-name">Linguagem</td>
+                <td>Faz perguntas utilizando "por quê?", "quando?" e "como?".</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
+            </tr>
+            <tr data-domain="Linguagem">
+                <td class="domain-name">Linguagem</td>
+                <td>Utiliza o tempo verbal futuro (Ex: "Eu irei à escola amanhã").</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
+            </tr>
+             <tr data-domain="Linguagem">
+                <td class="domain-name">Linguagem</td>
+                <td>Define 5 palavras diferentes pela sua função (Ex: "Martelo serve para...").</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
+            </tr>
+
+            <tr data-domain="Cognicao">
+                <td class="domain-name">Cognição</td>
+                <td>Conta 10 objetos ou mais com precisão (identifica o último número como total).</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
+            </tr>
+            <tr data-domain="Cognicao">
+                <td class="domain-name">Cognição</td>
+                <td>Classifica objetos por dois critérios simultâneos (Ex: 'Vermelho E Grande').</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
+            </tr>
+            <tr data-domain="Cognicao">
+                <td class="domain-name">Cognição</td>
+                <td>Identifica pelo menos 10 letras do alfabeto (maiúsculas e/ou minúsculas).</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
+            </tr>
+            <tr data-domain="Cognicao">
+                <td class="domain-name">Cognição</td>
+                <td>Compreende conceitos de tempo (ontem, amanhã, dia da semana).</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
+            </tr>
+            <tr data-domain="Cognicao">
+                <td class="domain-name">Cognição</td>
+                <td>Identifica o objeto que "não pertence" a um grupo temático (analogia simples).</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
+            </tr>
+
+
+            <tr data-domain="Socializacao">
+                <td class="domain-name">Socialização</td>
+                <td>Inicia conversas e interage com pares em jogos cooperativos (com regras simples).</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
+            </tr>
+            <tr data-domain="Socializacao">
+                <td class="domain-name">Socialização</td>
+                <td>Sabe o nome completo, idade e data de nascimento.</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
+            </tr>
+            <tr data-domain="Socializacao">
+                <td class="domain-name">Socialização</td>
+                <td>Segue regras de jogos de tabuleiro simples (demonstra habilidade de esperar a vez).</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
+            </tr>
+            <tr data-domain="Socializacao">
+                <td class="domain-name">Socialização</td>
+                <td>Demonstra empatia, nomeando sentimentos complexos (triste, feliz, bravo).</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
+            </tr>
+            <tr data-domain="Socializacao">
+                <td class="domain-name">Socialização</td>
+                <td>Resolve verbalmente conflitos simples com pares, sem agressão física.</td>
+                <td class="state-button state-sim" data-state="SIM" data-value="1.0" onclick="toggleState(this)">SIM</td>
             </tr>
 
         </tbody>
