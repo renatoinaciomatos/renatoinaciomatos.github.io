@@ -1,39 +1,99 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <link rel="icon" href="3720217.png" type="image/png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loo</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Checklist Integrado VB-MAPP, ABLLS-R e IPO (TEA)</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <main class="container">
-        <div class="top-bar">
-            <div class="caco-display">
-                <span class="caco-nome">Caco:</span>
-                <span class="caco-saldo" id="cacoSaldo">0</span>
-            </div>
-            <div class="top-buttons">
-                <button class="mudar-gateiros-btn" onclick="toggleGateirosInput()">🐱</button>
-                <button class="resetar-btn" onclick="resetarPagina()">Resetar</button>
-            </div>
-        </div>
+    <header>
+        <h1>Avaliação Integrada de Habilidades para TEA</h1>
+        <h2>VB-MAPP, ABLLS-R e IPO: Rastreamento do PEI</h2>
+        <p>Marque o estado atual da criança em cada macro-habilidade. O ciclo de clique é: **Sim (Adquirida) → AV (Às Vezes/Emergente) → Não (Ausente) → Sim**.</p>
+    </header>
 
-        <div id="gateiros-input-area" class="input-area oculto">
-            <input type="number" id="numGateirosInput" min="1" max="10" placeholder="Número de Gateiros">
-            <button class="finalizar-btn" onclick="setNumGateiros()">Definir Número de Gateiros</button>
-        </div>
-        
-        <div id="cardsGateiros" class="cards-grid">
-            </div>
+    <div id="summary">
+        <h3>Resumo de Progresso (Orientação ao PEI)</h3>
+        <p>Total de Habilidades Avaliadas: <span id="totalSkills">0</span></p>
+        <p class="summary-sim">Habilidades Adquiridas (Sim): <span id="simCount">0</span></p>
+        <p class="summary-av">Habilidades a Generalizar (AV): <span id="avCount">0</span></p>
+        <p class="summary-na">Habilidades a Adquirir (Não): <span id="naCount">0</span></p>
+    </div>
 
-        <div id="botoes-acao" class="botoes-acao">
-            <button class="finalizar-btn" onclick="finalizarSessao()">Finalizar</button>
-        </div>
+    <table id="assessmentTable">
+        <thead>
+            <tr>
+                <th class="skill-column">ID</th>
+                <th class="description-column">Macro-Habilidade Composta (PEI)</th>
+                <th class="score-column">Pontuação</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-skill-id="H1">
+                <td class="skill-id">H1</td>
+                <td>Faz 10 Mando(s) (pedidos) diferentes por meio vocal, sem ecoico nem prompt (VB-MAPP).</td>
+                <td class="state-button" data-state="SIM" onclick="toggleState(this)">SIM</td>
+            </tr>
+             <tr data-skill-id="H2">
+                <td class="skill-id">H2</td>
+                <td>Nomeia (Tato) 25 itens diferentes (objetos, figuras, pessoas familiares) (VB-MAPP).</td>
+                <td class="state-button" data-state="SIM" onclick="toggleState(this)">SIM</td>
+            </tr>
+            <tr data-skill-id="H3">
+                <td class="skill-id">H3</td>
+                <td>Responde a 20 Comportamentos de Ouvinte (Ex: pega o X e dá para a mãe) (VB-MAPP/ABLLS-R).</td>
+                <td class="state-button" data-state="SIM" onclick="toggleState(this)">SIM</td>
+            </tr>
+            <tr data-skill-id="H4">
+                <td class="skill-id">H4</td>
+                <td>Participa de uma Conversação (Intraverbal) com 5 trocas de turno com o adulto (VB-MAPP).</td>
+                <td class="state-button" data-state="SIM" onclick="toggleState(this)">SIM</td>
+            </tr>
+            <tr data-skill-id="H5">
+                <td class="skill-id">H5</td>
+                <td>Imita 10 ações motoras novas (fina e grossa) mediante modelo (ABLLS-R/VB-MAPP).</td>
+                <td class="state-button" data-state="SIM" onclick="toggleState(this)">SIM</td>
+            </tr>
+             <tr data-skill-id="H6">
+                <td class="skill-id">H6</td>
+                <td>Brinca independentemente com propósito (construtivo ou funcional) por 5 minutos (VB-MAPP).</td>
+                <td class="state-button" data-state="SIM" onclick="toggleState(this)">SIM</td>
+            </tr>
+            <tr data-skill-id="H7">
+                <td class="skill-id">H7</td>
+                <td>Alimenta-se com garfo e faca (ou colher) de forma independente e adequada (IPO/ABLLS-R - Autocuidado).</td>
+                <td class="state-button" data-state="SIM" onclick="toggleState(this)">SIM</td>
+            </tr>
+            <tr data-skill-id="H8">
+                <td class="skill-id">H8</td>
+                <td>Veste-se e desveste-se com pouca ajuda (inclui fechar zíper e botões) (IPO/ABLLS-R - Autocuidado).</td>
+                <td class="state-button" data-state="SIM" onclick="toggleState(this)">SIM</td>
+            </tr>
+            <tr data-skill-id="H9">
+                <td class="skill-id">H9</td>
+                <td>Usa o banheiro/penico (higiene) de forma independente (controle de esfíncteres) (IPO/ABLLS-R).</td>
+                <td class="state-button" data-state="SIM" onclick="toggleState(this)">SIM</td>
+            </tr>
+            <tr data-skill-id="H10">
+                <td class="skill-id">H10</td>
+                <td>Segue regras de grupo (Ex: esperar a vez, sentar na cadeira) em um ambiente de rotina/sala de aula (VB-MAPP).</td>
+                <td class="state-button" data-state="SIM" onclick="toggleState(this)">SIM</td>
+            </tr>
+            <tr data-skill-id="H11">
+                <td class="skill-id">H11</td>
+                <td>Nomeia e identifica 5 classes de objetos (Ex: animais, brinquedos, comida) (VB-MAPP).</td>
+                <td class="state-button" data-state="SIM" onclick="toggleState(this)">SIM</td>
+            </tr>
+            <tr data-skill-id="H12">
+                <td class="skill-id">H12</td>
+                <td>Demonstra cooperação e efetividade do reforçador (e.g., aceita feedback, senta-se na mesa por 5 min) (ABLLS-R).</td>
+                <td class="state-button" data-state="SIM" onclick="toggleState(this)">SIM</td>
+            </tr>
 
-    </main>
+        </tbody>
+    </table>
 
     <script src="script.js"></script>
 </body>
