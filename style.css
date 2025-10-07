@@ -1,7 +1,8 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7f6;
     padding: 20px;
+    color: #333;
 }
 
 header {
@@ -10,11 +11,53 @@ header {
 }
 
 h1 {
-    color: #333;
+    color: #007bff;
 }
 
-h2, h3 {
+h2 {
     color: #555;
+    font-weight: 300;
+}
+
+/* Resumo de Pontuação */
+#summary {
+    margin: 20px 0;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #e9ecef;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.score-grid {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.score-item {
+    margin: 5px;
+    padding: 10px 15px;
+    background-color: #fff;
+    border-radius: 5px;
+    font-size: 1.1em;
+    font-weight: bold;
+    min-width: 150px;
+    text-align: center;
+}
+
+.domain-label {
+    font-weight: normal;
+    color: #666;
+    display: block;
+    font-size: 0.9em;
+}
+
+.total-final {
+    margin-top: 20px;
+    text-align: center;
+    color: #007bff;
 }
 
 /* Tabela de Avaliação */
@@ -23,12 +66,12 @@ h2, h3 {
     border-collapse: collapse;
     margin-bottom: 30px;
     background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 #assessmentTable th, #assessmentTable td {
     padding: 12px 15px;
-    border: 1px solid #ddd;
+    border: 1px solid #e0e0e0;
     text-align: left;
 }
 
@@ -38,16 +81,18 @@ h2, h3 {
     font-weight: bold;
 }
 
-.skill-column {
-    width: 5%;
+.domain-column {
+    width: 15%;
+    font-weight: bold;
+    background-color: #f8f9fa;
 }
 
 .description-column {
-    width: 70%;
+    width: 65%;
 }
 
 .score-column {
-    width: 25%;
+    width: 20%;
     text-align: center;
 }
 
@@ -56,40 +101,24 @@ h2, h3 {
     cursor: pointer;
     font-weight: bold;
     text-align: center;
-    transition: background-color 0.2s ease;
-    user-select: none; /* Previne seleção de texto ao clicar */
+    transition: background-color 0.2s ease, color 0.2s ease;
+    user-select: none;
+    border-radius: 4px;
+    padding: 8px;
 }
 
-/* Classes de Estado */
+/* Classes de Estado IPO (Sim=1.0, AV=0.5, Não=0.0) */
 .state-sim {
-    background-color: #4CAF50; /* Verde */
+    background-color: #4CAF50; /* Verde: Habilidade Adquirida */
     color: white;
 }
 
 .state-av {
-    background-color: #FFC107; /* Amarelo */
+    background-color: #FFC107; /* Amarelo: Habilidade Emergente/Em Progresso (AV) */
     color: #333;
 }
 
 .state-na {
-    background-color: #F44336; /* Vermelho */
+    background-color: #F44336; /* Vermelho: Habilidade Ausente/Não Adquirida */
     color: white;
 }
-
-/* Resumo */
-#summary {
-    margin: 20px 0;
-    padding: 15px;
-    border: 1px solid #ccc;
-    background-color: #e9ecef;
-    border-radius: 5px;
-}
-
-#summary p {
-    margin: 5px 0;
-    font-size: 1.1em;
-}
-
-.summary-sim { color: #4CAF50; }
-.summary-av { color: #FFC107; }
-.summary-na { color: #F44336; }
