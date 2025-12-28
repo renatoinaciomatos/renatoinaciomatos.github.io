@@ -15,23 +15,23 @@
         width: 100vw;
     }
 
-    /* Container de movimento: Ajustado para não cortar os números externos */
+    /* Container de movimento com margem de segurança maior para os números */
     #floating-wrapper {
         position: absolute;
-        width: 650px; 
-        height: 650px;
+        width: 700px; 
+        height: 700px;
         display: flex;
         justify-content: center;
         align-items: center;
-        animation: moveAround 45s ease-in-out infinite alternate;
+        /* O cálculo agora usa 700px para garantir que os números externos (60px) fiquem dentro */
+        animation: moveAround 50s ease-in-out infinite alternate;
     }
 
     @keyframes moveAround {
         0% { transform: translate(0, 0); }
-        25% { transform: translate(calc(100vw - 650px), 5vh); }
-        50% { transform: translate(5vw, calc(100vh - 650px)); }
-        75% { transform: translate(calc(100vw - 650px), 20vh); }
-        100% { transform: translate(0, calc(100vh - 650px)); }
+        33% { transform: translate(calc(100vw - 700px), 15vh); }
+        66% { transform: translate(10vw, calc(100vh - 700px)); }
+        100% { transform: translate(calc(100vw - 700px), calc(100vh - 700px)); }
     }
 
     .clock-container {
@@ -63,15 +63,15 @@
         animation: rainbow 12s infinite linear;
     }
 
-    /* Correção da cor dos números */
     .clock-number {
         position: absolute;
-        font-size: 60px; /* Ainda maiores */
+        font-size: 65px; 
         font-weight: bold;
         font-family: 'Fredoka One', cursive;
         z-index: 5;
-        color: #FF3333; /* Cor base para o hue-rotate funcionar */
+        color: #FF3333; 
         text-shadow: 4px 4px 10px rgba(0,0,0,1);
+        /* Animação de cor será aplicada individualmente via JS */
         animation: rainbow 12s infinite linear;
     }
 
@@ -84,7 +84,6 @@
         position: absolute;
         font-size: 55px;
         z-index: 6;
-        /* Ícones brancos ou coloridos não são afetados pelo filtro se não quisermos */
     }
 
     .hand {
@@ -97,29 +96,30 @@
     }
 
     .hour-hand {
-        width: 20px;
+        width: 22px;
         height: 28%;
         background: #fff;
         box-shadow: 0 0 30px #fff;
-        margin-left: -10px;
+        margin-left: -11px;
     }
 
     .minute-hand {
-        width: 5px;
+        width: 6px;
         height: 42%;
         background: rgba(255, 255, 255, 0.4);
-        margin-left: -2.5px;
+        margin-left: -3px;
     }
 
     .center-dot {
         position: absolute;
-        width: 25px;
-        height: 25px;
+        width: 30px;
+        height: 30px;
         background: white;
         border-radius: 50%;
         z-index: 15;
     }
 </style>
+
 
 </head>
 <body>
