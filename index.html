@@ -3,108 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relógio da Rotina</title>
-<style>
-    body {
-        background-color: #1a1a1a;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        overflow: hidden;
-    }
+    <title>Relógio da Rotina - TV Mode</title>
+    <style>
+        body {
+            background-color: #000; /* Fundo preto puro ajuda a preservar a TV */
+            margin: 0;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
 
-    .clock-container {
-        position: relative;
-        width: 85vw;
-        height: 85vw;
-        max-width: 500px;
-        max-height: 500px;
-        background: #222;
-        border-radius: 50%;
-        border: 10px solid #333;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        box-shadow: 0 0 30px rgba(0,0,0,0.5);
-    }
+        /* Container que flutua pela tela */
+        #floating-wrapper {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: moveAround 40s linear infinite alternate;
+        }
 
-    #sectors-container {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-    }
+        @keyframes moveAround {
+            0% { top: 0%; left: 0%; }
+            25% { top: 10%; left: 40%; }
+            50% { top: 30%; left: 10%; }
+            75% { top: 5%; left: 30%; }
+            100% { top: 20%; left: 0%; }
+        }
 
-    .sector {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        transform-origin: center;
-        /* ESTE CLIP-PATH CRIA UMA FATIA DE EXATOS 30 GRAUS */
-        clip-path: polygon(50% 50%, 50% 0%, 76.8% 0%); 
-        animation: colorChange 12s infinite linear;
-    }
+        .clock-container {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-    @keyframes colorChange {
-        0% { filter: hue-rotate(0deg) brightness(1); }
-        100% { filter: hue-rotate(360deg) brightness(1.2); }
-    }
+        /* Fatias arredondadas (Setores Circulares) */
+        #sectors-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden; /* Garante o formato circular */
+            mask-image: radial-gradient(circle, white 100%, black 100%);
+        }
 
-    .activity-icon {
-        position: absolute;
-        width: 60px;
-        height: 60px;
-        font-size: 40px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 5;
-    }
+        .sector {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-origin: center;
+            clip-path: polygon(50% 50%, 50% 0%, 77% 0%);
+            animation: rainbow 15s infinite linear;
+        }
 
-    .hand {
-        position: absolute;
-        bottom: 50%;
-        left: 50%;
-        transform-origin: bottom center;
-        border-radius: 20px;
-        z-index: 10;
-    }
+        @keyframes rainbow {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
 
-    .hour-hand {
-        width: 14px;
-        height: 30%;
-        background: #ffffff;
-        box-shadow: 0 0 20px #fff;
-        margin-left: -7px;
-    }
+        .activity-icon, .clock-number {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+            transition: color 1s;
+        }
 
-    .minute-hand {
-        width: 4px;
-        height: 40%;
-        background: rgba(255, 255, 255, 0.4);
-        margin-left: -2px;
-    }
+        .activity-icon {
+            font-size: 45px;
+            width: 60px;
+            height: 60px;
+        }
 
-    .center-dot {
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        background: white;
-        border-radius: 50%;
-        z-index: 15;
-        box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    }
-        </style>
-    
+        .clock-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            animation: rainbow 15s infinite linear;
+        }
+
+        /* Ponteiros */
+        .hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+            border-radius: 20px;
+            z-index: 10;
+        }
+
+        .hour-hand {
+            width: 16px;
+            height: 30%;
+            background: #fff;
+            box-shadow: 0 0 25px #fff;
+            margin-left: -8px;
+        }
+
+        .minute-hand {
+            width: 4px;
+            height: 42%;
+            background: rgba(255, 255, 255, 0.4);
+            margin-left: -2px;
+        }
+
+        .center-dot {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            z-index: 15;
+        }
+    </style>
 </head>
 <body>
-    <div class="clock-container" id="main-clock">
-        <div id="sectors-container"></div>
-        <div class="hand hour-hand" id="hour"></div>
-        <div class="hand minute-hand" id="min"></div>
-        <div class="center-dot"></div>
+    <div id="floating-wrapper">
+        <div class="clock-container" id="main-clock">
+            <div id="sectors-container"></div>
+            <div class="hand hour-hand" id="hour"></div>
+            <div class="hand minute-hand" id="min"></div>
+            <div class="center-dot"></div>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
