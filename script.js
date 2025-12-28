@@ -8,38 +8,46 @@ const routinePM = {
     20: "🍽️", 21: "😴", 22: "🌙", 23: "🌙"
 };
 
-const container = document.getElementById('sectors-container');
-const clock = document.getElementById('main-clock');
 const colors = ['#FF5733', '#33FF57', '#3357FF', '#F333FF', '#FF33A8', '#33FFF3', '#F3FF33', '#FF8633', '#8633FF', '#33FF86', '#FF3333', '#3386FF'];
 
-function createClock() {
-    // Limpa o container antes de criar
-    container.innerHTML = '';
-    
+function init() {
+    const container = document.getElementById('sectors-container');
+    const clock = document.getElementById('main-clock');
+    const radius = 250; // Metade da largura do relógio
+
     for (let i = 0; i < 12; i++) {
-        // Fatias coloridas preenchendo o círculo
+        // 1. Fatias coloridas (Setores circulares)
         let sector = document.createElement('div');
         sector.className = 'sector';
         sector.style.backgroundColor = colors[i];
-        // Rotaciona para que cada fatia comece onde a outra termina
         sector.style.transform = `rotate(${i * 30}deg)`;
         container.appendChild(sector);
 
-        // Ícones
+        // 2. Números do lado de fora
+        let num = document.createElement('div');
+        num.className = 'clock-number';
+        num.innerText = i === 0 ? 12 : i;
+        let angleNum = (i * 30 - 90) * (Math.PI / 180);
+        let xNum = radius + (radius + 35) * Math.cos(angleNum) - 15;
+        let yNum = radius + (radius + 35) * Math.sin(angleNum) - 15;
+        num.style.left = xNum + 'px';
+        num.style.top = yNum + 'px';
+        clock.appendChild(num);
+
+        // 3. Ícones da Rotina
         let icon = document.createElement('div');
         icon.className = 'activity-icon';
         icon.id = `icon-${i}`;
-        
-        // Posicionamento centralizado em cada fatia (fatia + 15 graus)
-        let angle = (i * 30 - 75) * (Math.PI / 180);
-        let radius = clock.offsetWidth / 2.5; 
-        let x = (clock.offsetWidth / 2) + radius * Math.cos(angle) - 30;
-        let y = (clock.offsetHeight / 2) + radius * Math.sin(angle) - 30;
-        
-        icon.style.left = x + 'px';
-        icon.style.top = y + 'px';
+        let angleIcon = (i * 30 - 75) * (Math.PI / 180); // No meio da fatia
+        let xIcon = radius + (radius * 0.7) * Math.cos(angleIcon) - 30;
+        let yIcon = radius + (radius * 0.7) * Math.sin(angleIcon) - 30;
+        icon.style.left = xIcon + 'px';
+        icon.style.top = yIcon + 'px';
         clock.appendChild(icon);
     }
+    
+    update();
+    setInterval(update, 1000);
 }
 
 function update() {
@@ -53,17 +61,10 @@ function update() {
 
     for (let i = 0; i < 12; i++) {
         let iconEl = document.getElementById(`icon-${i}`);
-        if(!iconEl) continue;
+        let hourRef = i === 0 ? 12 : i;
+        let actualH = isPM ? (hourRef === 12 ? 12 : hourRef + 12) : (hourRef === 12 ? 0 : hourRef);
 
-        let hourRef = i === 0 ? 12 : i; 
-        let actualH;
-
-        if (isPM) {
-            actualH = (hourRef === 12) ? 12 : hourRef + 12;
-        } else {
-            actualH = (hourRef === 12) ? 0 : hourRef;
-        }
-
+        // Regra: 21h às 07:59h = Dormir
         if (actualH >= 21 || actualH < 8) {
             iconEl.innerText = "🌙";
         } else {
@@ -72,10 +73,5 @@ function update() {
     }
 }
 
-// Inicializa
-window.onload = () => {
-    createClock();
-    setInterval(update, 1000);
-    update();
-};
-    
+window.onload = init;
+        
