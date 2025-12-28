@@ -13,29 +13,31 @@ const colors = ['#FF5733', '#33FF57', '#3357FF', '#F333FF', '#FF33A8', '#33FFF3'
 function init() {
     const container = document.getElementById('sectors-container');
     const clock = document.getElementById('main-clock');
-    const radius = 240; // Baseado no tamanho do clock-container
+    const radius = 240; 
 
     for (let i = 0; i < 12; i++) {
-        // Fatias
+        // 1. Fatias com cores independentes (atraso de animação)
         let sector = document.createElement('div');
         sector.className = 'sector';
         sector.style.backgroundColor = colors[i];
         sector.style.transform = `rotate(${i * 30}deg)`;
+        sector.style.animationDelay = `-${i * 1}s`; // Atraso negativo faz começar em pontos diferentes
         container.appendChild(sector);
 
-        // Números maiores do lado de fora
+        // 2. Números com cores independentes
         let num = document.createElement('div');
         num.className = 'clock-number';
         num.innerText = i === 0 ? 12 : i;
+        num.style.animationDelay = `-${i * 1.5}s`; // Atraso diferente das fatias para mais variedade
+        
         let angleNum = (i * 30 - 90) * (Math.PI / 180);
-        // Posicionando um pouco mais longe para não bater nas fatias
-        let xNum = radius + (radius + 50) * Math.cos(angleNum) - 25;
-        let yNum = radius + (radius + 50) * Math.sin(angleNum) - 25;
+        let xNum = radius + (radius + 75) * Math.cos(angleNum) - 35;
+        let yNum = radius + (radius + 75) * Math.sin(angleNum) - 35;
         num.style.left = xNum + 'px';
         num.style.top = yNum + 'px';
         clock.appendChild(num);
 
-        // Ícones
+        // 3. Ícones
         let icon = document.createElement('div');
         icon.className = 'activity-icon';
         icon.id = `icon-${i}`;
