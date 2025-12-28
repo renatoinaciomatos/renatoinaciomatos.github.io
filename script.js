@@ -12,29 +12,34 @@ const container = document.getElementById('sectors-container');
 const clock = document.getElementById('main-clock');
 const colors = ['#FF5733', '#33FF57', '#3357FF', '#F333FF', '#FF33A8', '#33FFF3', '#F3FF33', '#FF8633', '#8633FF', '#33FF86', '#FF3333', '#3386FF'];
 
-// Criar os elementos visuais
-for (let i = 0; i < 12; i++) {
-    // Fatias coloridas
-    let sector = document.createElement('div');
-    sector.className = 'sector';
-    sector.style.backgroundColor = colors[i];
-    sector.style.transform = `rotate(${i * 30}deg)`;
-    container.appendChild(sector);
+function createClock() {
+    // Limpa o container antes de criar
+    container.innerHTML = '';
+    
+    for (let i = 0; i < 12; i++) {
+        // Fatias coloridas preenchendo o círculo
+        let sector = document.createElement('div');
+        sector.className = 'sector';
+        sector.style.backgroundColor = colors[i];
+        // Rotaciona para que cada fatia comece onde a outra termina
+        sector.style.transform = `rotate(${i * 30}deg)`;
+        container.appendChild(sector);
 
-    // Ícones
-    let icon = document.createElement('div');
-    icon.className = 'activity-icon';
-    icon.id = `icon-${i}`;
-    
-    // Matemática para posicionar em círculo (raio de 42% do relógio)
-    let angle = (i * 30 - 90) * (Math.PI / 180);
-    let radius = clock.offsetWidth / 2.4; 
-    let x = (clock.offsetWidth / 2) + radius * Math.cos(angle) - 25;
-    let y = (clock.offsetHeight / 2) + radius * Math.sin(angle) - 25;
-    
-    icon.style.left = x + 'px';
-    icon.style.top = y + 'px';
-    clock.appendChild(icon);
+        // Ícones
+        let icon = document.createElement('div');
+        icon.className = 'activity-icon';
+        icon.id = `icon-${i}`;
+        
+        // Posicionamento centralizado em cada fatia (fatia + 15 graus)
+        let angle = (i * 30 - 75) * (Math.PI / 180);
+        let radius = clock.offsetWidth / 2.5; 
+        let x = (clock.offsetWidth / 2) + radius * Math.cos(angle) - 30;
+        let y = (clock.offsetHeight / 2) + radius * Math.sin(angle) - 30;
+        
+        icon.style.left = x + 'px';
+        icon.style.top = y + 'px';
+        clock.appendChild(icon);
+    }
 }
 
 function update() {
@@ -43,20 +48,22 @@ function update() {
     let m = now.getMinutes();
     let isPM = h >= 12;
 
-    // Girar ponteiros
     document.getElementById('hour').style.transform = `rotate(${(h % 12) * 30 + m/2}deg)`;
     document.getElementById('min').style.transform = `rotate(${m * 6}deg)`;
 
-    // Atualizar ícones (Dormir das 21h às 08h)
     for (let i = 0; i < 12; i++) {
         let iconEl = document.getElementById(`icon-${i}`);
-        let hourRef = i; // 0 a 11 no relógio
-        
-        // Se for tarde, somamos 12 para checar a rotina (exceto se for 12)
-        let actualH = isPM ? (hourRef === 0 ? 12 : hourRef + 12) : hourRef;
-        if (hourRef === 0 && !isPM) actualH = 0;
+        if(!iconEl) continue;
 
-        // Regra da Lua (9PM às 8AM)
+        let hourRef = i === 0 ? 12 : i; 
+        let actualH;
+
+        if (isPM) {
+            actualH = (hourRef === 12) ? 12 : hourRef + 12;
+        } else {
+            actualH = (hourRef === 12) ? 0 : hourRef;
+        }
+
         if (actualH >= 21 || actualH < 8) {
             iconEl.innerText = "🌙";
         } else {
@@ -65,5 +72,10 @@ function update() {
     }
 }
 
-setInterval(update, 1000);
-update();
+// Inicializa
+window.onload = () => {
+    createClock();
+    setInterval(update, 1000);
+    update();
+};
+    
