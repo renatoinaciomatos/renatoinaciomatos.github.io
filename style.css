@@ -1,124 +1,91 @@
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f7f6;
-    padding: 20px;
-    color: #333;
-}
-
-header {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-h1 {
-    color: #007bff;
-}
-
-h2 {
-    color: #555;
-    font-weight: 300;
-}
-
-/* Resumo de Pontuação */
-#summary {
-    margin: 20px 0;
-    padding: 20px;
-    border: 1px solid #ccc;
-    background-color: #e9ecef;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.score-grid {
+    background-color: #1a1a1a;
     display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    margin-top: 15px;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
 }
 
-.score-item {
-    margin: 5px;
-    padding: 10px 15px;
-    background-color: #fff;
-    border-radius: 5px;
-    font-size: 1.1em;
-    font-weight: bold;
-    min-width: 150px;
-    text-align: center;
+.clock-container {
+    position: relative;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    box-shadow: 0 0 50px rgba(0,0,0,0.5);
 }
 
-.domain-label {
-    font-weight: normal;
-    color: #666;
-    display: block;
-    font-size: 0.9em;
+/* Base do relógio */
+.clock-face {
+    position: absolute;
+    top: 10%; left: 10%;
+    width: 80%; height: 80%;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    z-index: 10;
 }
 
-.total-final {
-    margin-top: 20px;
-    text-align: center;
-    color: #007bff;
+/* Setores circulares (fatias de 30°) */
+.sector {
+    position: absolute;
+    width: 100%; height: 100%;
+    clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 20%); /* Ajustado via JS */
+    transition: filter 2s;
+    animation: colorShift 10s infinite alternate;
 }
 
-/* Tabela de Avaliação */
-#assessmentTable {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 30px;
-    background-color: #fff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+@keyframes colorShift {
+    0% { filter: hue-rotate(0deg) brightness(1); }
+    100% { filter: hue-rotate(360deg) brightness(1.2); }
 }
 
-#assessmentTable th, #assessmentTable td {
-    padding: 12px 15px;
-    border: 1px solid #e0e0e0;
-    text-align: left;
+/* Ícones da Rotina */
+.activity-icon {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    transform-origin: center;
+    z-index: 5;
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-#assessmentTable thead th {
-    background-color: #007bff;
-    color: white;
-    font-weight: bold;
+/* Ponteiros */
+.hand {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform-origin: bottom;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    z-index: 20;
 }
 
-.domain-column {
-    width: 15%;
-    font-weight: bold;
-    background-color: #f8f9fa;
+.hour-hand {
+    width: 14px;
+    height: 35%;
+    background: #ffffff;
+    box-shadow: 0 0 15px #fff;
+    margin-left: -7px;
 }
 
-.description-column {
-    width: 65%;
+.minute-hand {
+    width: 4px;
+    height: 45%;
+    background: rgba(255, 255, 255, 0.4);
+    margin-left: -2px;
 }
 
-.score-column {
-    width: 20%;
-    text-align: center;
-}
-
-/* Estilo para o botão tri-estadual (a célula clicável) */
-.state-button {
-    cursor: pointer;
-    font-weight: bold;
-    text-align: center;
-    transition: background-color 0.2s ease, color 0.2s ease;
-    user-select: none;
-    border-radius: 4px;
-    padding: 8px;
-}
-
-/* Classes de Estado IPO (Sim=1.0, AV=0.5, Não=0.0) */
-.state-sim {
-    background-color: #4CAF50; /* Verde: Habilidade Adquirida */
-    color: white;
-}
-
-.state-av {
-    background-color: #FFC107; /* Amarelo: Habilidade Emergente/Em Progresso (AV) */
-    color: #333;
-}
-
-.state-na {
-    background-color: #F44336; /* Vermelho: Habilidade Ausente/Não Adquirida */
-    color: white;
+.center-dot {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 20px; height: 20px;
+    background: white;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 25;
 }
