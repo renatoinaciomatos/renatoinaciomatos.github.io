@@ -4,17 +4,105 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Relógio da Rotina</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Estilo embutido para garantir que o layout funcione */
+        body {
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .clock-container {
+            position: relative;
+            width: 90vw;
+            height: 90vw;
+            max-width: 550px;
+            max-height: 550px;
+            background: #222;
+            border-radius: 50%;
+            border: 8px solid #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #sectors-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .sector {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-origin: center;
+            clip-path: polygon(50% 50%, 47% 0%, 53% 0%); /* Fatia fina para o fundo */
+            animation: colorChange 10s infinite alternate;
+        }
+
+        @keyframes colorChange {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        .activity-icon {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            font-size: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+        }
+
+        .hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+            border-radius: 10px;
+            z-index: 10;
+        }
+
+        .hour-hand {
+            width: 12px;
+            height: 35%;
+            background: #ffffff;
+            box-shadow: 0 0 15px #fff;
+            margin-left: -6px;
+        }
+
+        .minute-hand {
+            width: 3px;
+            height: 42%;
+            background: rgba(255, 255, 255, 0.4);
+            margin-left: -1.5px;
+        }
+
+        .center-dot {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: white;
+            border-radius: 50%;
+            z-index: 15;
+        }
+    </style>
 </head>
 <body>
-    <div class="clock-container">
+    <div class="clock-container" id="main-clock">
         <div id="sectors-container"></div>
-        
-        <div class="clock-face">
-            <div class="hand hour-hand"></div>
-            <div class="hand minute-hand"></div>
-            <div class="center-dot"></div>
-        </div>
+        <div class="hand hour-hand" id="hour"></div>
+        <div class="hand minute-hand" id="min"></div>
+        <div class="center-dot"></div>
     </div>
     <script src="script.js"></script>
 </body>
