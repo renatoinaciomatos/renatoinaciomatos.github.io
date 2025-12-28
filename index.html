@@ -5,120 +5,122 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Relógio da Rotina - Modo TV</title>
     <style>
-        /* Importando uma fonte mais divertida */
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
 
-        body {
-            background-color: #000;
-            margin: 0;
-            overflow: hidden;
-            height: 100vh;
-            width: 100vw;
-            display: flex;
-        }
+    body {
+        background-color: #000;
+        margin: 0;
+        overflow: hidden;
+        height: 100vh;
+        width: 100vw;
+    }
 
-        /* Container que se move sem sair da tela */
-        #floating-wrapper {
-            position: absolute;
-            width: 600px; 
-            height: 600px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            /* Animação com translate evita que o objeto "fuga" da tela */
-            animation: moveAround 30s ease-in-out infinite alternate;
-        }
+    /* Container de movimento: Ajustado para não cortar os números externos */
+    #floating-wrapper {
+        position: absolute;
+        width: 650px; 
+        height: 650px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        animation: moveAround 45s ease-in-out infinite alternate;
+    }
 
-        @keyframes moveAround {
-            0% { transform: translate(0, 0); }
-            33% { transform: translate(calc(100vw - 600px), 10vh); }
-            66% { transform: translate(10vw, calc(100vh - 600px)); }
-            100% { transform: translate(calc(100vw - 600px), calc(100vh - 600px)); }
-        }
+    @keyframes moveAround {
+        0% { transform: translate(0, 0); }
+        25% { transform: translate(calc(100vw - 650px), 5vh); }
+        50% { transform: translate(5vw, calc(100vh - 650px)); }
+        75% { transform: translate(calc(100vw - 650px), 20vh); }
+        100% { transform: translate(0, calc(100vh - 650px)); }
+    }
 
-        .clock-container {
-            position: relative;
-            width: 480px;
-            height: 480px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    .clock-container {
+        position: relative;
+        width: 480px;
+        height: 480px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-        #sectors-container {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            overflow: hidden;
-            mask-image: radial-gradient(circle, white 100%, black 100%);
-            -webkit-mask-image: radial-gradient(circle, white 100%, black 100%);
-        }
+    #sectors-container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        overflow: hidden;
+        -webkit-mask-image: radial-gradient(circle, white 100%, black 100%);
+        mask-image: radial-gradient(circle, white 100%, black 100%);
+    }
 
-        .sector {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            transform-origin: center;
-            clip-path: polygon(50% 50%, 50% 0%, 77% 0%);
-            animation: rainbow 10s infinite linear;
-        }
+    .sector {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transform-origin: center;
+        clip-path: polygon(50% 50%, 50% 0%, 77% 0%);
+        animation: rainbow 12s infinite linear;
+    }
 
-        .clock-number {
-            position: absolute;
-            font-size: 50px; /* Números maiores */
-            font-weight: bold;
-            font-family: 'Fredoka One', cursive; /* Fonte divertida */
-            z-index: 5;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.9);
-            animation: rainbow 10s infinite linear; /* Mudando de cor */
-        }
+    /* Correção da cor dos números */
+    .clock-number {
+        position: absolute;
+        font-size: 60px; /* Ainda maiores */
+        font-weight: bold;
+        font-family: 'Fredoka One', cursive;
+        z-index: 5;
+        color: #FF3333; /* Cor base para o hue-rotate funcionar */
+        text-shadow: 4px 4px 10px rgba(0,0,0,1);
+        animation: rainbow 12s infinite linear;
+    }
 
-        @keyframes rainbow {
-            0% { filter: hue-rotate(0deg) brightness(1.2); }
-            100% { filter: hue-rotate(360deg) brightness(1.2); }
-        }
+    @keyframes rainbow {
+        0% { filter: hue-rotate(0deg) brightness(1.5); }
+        100% { filter: hue-rotate(360deg) brightness(1.5); }
+    }
 
-        .activity-icon {
-            position: absolute;
-            font-size: 55px;
-            z-index: 6;
-        }
+    .activity-icon {
+        position: absolute;
+        font-size: 55px;
+        z-index: 6;
+        /* Ícones brancos ou coloridos não são afetados pelo filtro se não quisermos */
+    }
 
-        .hand {
-            position: absolute;
-            bottom: 50%;
-            left: 50%;
-            transform-origin: bottom center;
-            border-radius: 20px;
-            z-index: 10;
-        }
+    .hand {
+        position: absolute;
+        bottom: 50%;
+        left: 50%;
+        transform-origin: bottom center;
+        border-radius: 20px;
+        z-index: 10;
+    }
 
-        .hour-hand {
-            width: 18px;
-            height: 28%;
-            background: #fff;
-            box-shadow: 0 0 25px #fff;
-            margin-left: -9px;
-        }
+    .hour-hand {
+        width: 20px;
+        height: 28%;
+        background: #fff;
+        box-shadow: 0 0 30px #fff;
+        margin-left: -10px;
+    }
 
-        .minute-hand {
-            width: 5px;
-            height: 40%;
-            background: rgba(255, 255, 255, 0.4);
-            margin-left: -2.5px;
-        }
+    .minute-hand {
+        width: 5px;
+        height: 42%;
+        background: rgba(255, 255, 255, 0.4);
+        margin-left: -2.5px;
+    }
 
-        .center-dot {
-            position: absolute;
-            width: 25px;
-            height: 25px;
-            background: white;
-            border-radius: 50%;
-            z-index: 15;
-        }
-    </style>
+    .center-dot {
+        position: absolute;
+        width: 25px;
+        height: 25px;
+        background: white;
+        border-radius: 50%;
+        z-index: 15;
+    }
+</style>
+
 </head>
 <body>
     <div id="floating-wrapper">
