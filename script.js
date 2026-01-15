@@ -8,16 +8,14 @@ const classesData = [
 const container = document.getElementById('schedule');
 
 classesData.forEach(item => {
-    const group = document.createElement('div');
-    group.className = 'day-group';
+    const block = document.createElement('div');
+    block.className = 'day-group';
     
-    group.innerHTML = `
+    block.innerHTML = `
         <span class="day-label">${item.day}</span>
-        <div class="card">
-            <span class="time">${item.start} — ${item.end}</span>
-            <span class="code">${item.code}</span>
-        </div>
+        <span class="time">${item.start} — ${item.end}</span>
+        <span class="code">${item.code}</span>
     `;
     
-    container.appendChild(group);
+    container.appendChild(block);
 });
