@@ -3,132 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relógio da Rotina - Modo TV</title>
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
-
-    body {
-        background-color: #000;
-        margin: 0;
-        overflow: hidden;
-        height: 100vh;
-        width: 100vw;
-    }
-
-    /* Container de movimento com margem de segurança maior para os números */
-    #floating-wrapper {
-        position: absolute;
-        width: 700px; 
-        height: 700px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        /* O cálculo agora usa 700px para garantir que os números externos (60px) fiquem dentro */
-        animation: moveAround 50s ease-in-out infinite alternate;
-    }
-
-    @keyframes moveAround {
-        0% { transform: translate(0, 0); }
-        33% { transform: translate(calc(100vw - 700px), 15vh); }
-        66% { transform: translate(10vw, calc(100vh - 700px)); }
-        100% { transform: translate(calc(100vw - 700px), calc(100vh - 700px)); }
-    }
-
-    .clock-container {
-        position: relative;
-        width: 480px;
-        height: 480px;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    #sectors-container {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        overflow: hidden;
-        -webkit-mask-image: radial-gradient(circle, white 100%, black 100%);
-        mask-image: radial-gradient(circle, white 100%, black 100%);
-    }
-
-    .sector {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        transform-origin: center;
-        clip-path: polygon(50% 50%, 50% 0%, 77% 0%);
-        animation: rainbow 12s infinite linear;
-    }
-
-    .clock-number {
-        position: absolute;
-        font-size: 65px; 
-        font-weight: bold;
-        font-family: 'Fredoka One', cursive;
-        z-index: 5;
-        color: #FF3333; 
-        text-shadow: 4px 4px 10px rgba(0,0,0,1);
-        /* Animação de cor será aplicada individualmente via JS */
-        animation: rainbow 12s infinite linear;
-    }
-
-    @keyframes rainbow {
-        0% { filter: hue-rotate(0deg) brightness(1.5); }
-        100% { filter: hue-rotate(360deg) brightness(1.5); }
-    }
-
-    .activity-icon {
-        position: absolute;
-        font-size: 55px;
-        z-index: 6;
-    }
-
-    .hand {
-        position: absolute;
-        bottom: 50%;
-        left: 50%;
-        transform-origin: bottom center;
-        border-radius: 20px;
-        z-index: 10;
-    }
-
-    .hour-hand {
-        width: 22px;
-        height: 28%;
-        background: #fff;
-        box-shadow: 0 0 30px #fff;
-        margin-left: -11px;
-    }
-
-    .minute-hand {
-        width: 6px;
-        height: 42%;
-        background: rgba(255, 255, 255, 0.4);
-        margin-left: -3px;
-    }
-
-    .center-dot {
-        position: absolute;
-        width: 30px;
-        height: 30px;
-        background: white;
-        border-radius: 50%;
-        z-index: 15;
-    }
-</style>
-
-
+    <title>Meu Horário Acadêmico 2026.1</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="floating-wrapper">
-        <div class="clock-container" id="main-clock">
-            <div id="sectors-container"></div>
-            <div class="hand hour-hand" id="hour"></div>
-            <div class="hand minute-hand" id="min"></div>
-            <div class="center-dot"></div>
+    <div class="container">
+        <header>
+            <h1>Horário de Aulas 2026.1</h1>
+            <p>Professor: RENATO</p>
+        </header>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Horário</th>
+                        <th>Segunda</th>
+                        <th>Terça</th>
+                        <th>Quarta</th>
+                        <th>Quinta</th>
+                        <th>Sexta</th>
+                    </tr>
+                </thead>
+                <tbody id="schedule-body">
+                    </tbody>
+            </table>
         </div>
     </div>
     <script src="script.js"></script>
